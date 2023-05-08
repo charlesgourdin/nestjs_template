@@ -10,15 +10,22 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import { User } from './entities/user.entity';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    const result = this.usersService.create(createUserDto);
-    return result;
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      const userId = await this.usersService.create(createUserDto);
+      return {
+        status: 201,
+        message: `User ${userId} created`,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get()

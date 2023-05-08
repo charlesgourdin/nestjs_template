@@ -13,8 +13,13 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    this.usersRepository.insert(createUserDto);
-    return createUserDto;
+    try {
+      const user = await this.usersRepository.create(createUserDto);
+      const { id } = await this.usersRepository.save(user);
+      return id;
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {
