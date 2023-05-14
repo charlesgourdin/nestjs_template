@@ -20,4 +20,7 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column({ default: false })
+  isActive: boolean;
 }

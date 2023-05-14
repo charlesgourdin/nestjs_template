@@ -29,8 +29,13 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    try {
+      const result = await this.usersService.findAll();
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Get(':id')
