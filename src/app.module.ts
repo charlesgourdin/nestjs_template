@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/entities/user.entity';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EmailModule } from './email/email.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -17,7 +18,11 @@ import * as Joi from '@hapi/joi';
         THROTTLE_LIMIT: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
-        EMAIL_CONFIRMATION_URL: Joi.string().required(),
+        EMAIL_HOST: Joi.string().required(),
+        EMAIL_ADDRESS: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
+        EMAIL_PORT: Joi.number().required(),
         // ...
       }),
     }),
@@ -41,6 +46,7 @@ import * as Joi from '@hapi/joi';
       }),
     }),
     UsersModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

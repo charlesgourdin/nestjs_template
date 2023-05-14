@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import EmailService from 'src/email/email.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,6 +13,8 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly emailService: EmailService,
+    private readonly configService: ConfigService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -28,9 +32,17 @@ export class UsersService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
-      const data = this.usersRepository.find();
+      const data = await this.usersRepository.find();
+
+      await this.emailService.sendMail({
+        from: this.configService.get('EMAIL_ADDRESS'),
+        to: 'gourdin.charles@gmail.com',
+        subject: 'Email confirmation',
+        text: 'test',
+      });
+
       return data;
     } catch (error) {
       throw error;
