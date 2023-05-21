@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import EmailService from 'src/email/email.service';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -26,7 +26,25 @@ export class UsersService {
         password: hashedPassword,
       });
       const { id } = await this.usersRepository.save(user);
+
+      await this.emailService.sendVerificationLink('gourdin.charles@gmail.com');
+
       return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async markEmailAsConfirmed(email: string): Promise<UpdateResult> {
+    try {
+      return this.usersRepository.update(
+        {
+          email,
+        },
+        {
+          isActive: false,
+        },
+      );
     } catch (error) {
       throw error;
     }
@@ -35,13 +53,6 @@ export class UsersService {
   async findAll() {
     try {
       const data = await this.usersRepository.find();
-
-      await this.emailService.sendMail({
-        from: this.configService.get('EMAIL_ADDRESS'),
-        to: 'gourdin.charles@gmail.com',
-        subject: 'Email confirmation',
-        text: 'test',
-      });
 
       return data;
     } catch (error) {

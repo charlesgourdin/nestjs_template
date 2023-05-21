@@ -18,6 +18,7 @@ import * as Joi from '@hapi/joi';
         THROTTLE_LIMIT: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
         JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
         EMAIL_HOST: Joi.string().required(),
         EMAIL_ADDRESS: Joi.string().required(),
         EMAIL_USER: Joi.string().required(),
