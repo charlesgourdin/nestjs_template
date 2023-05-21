@@ -7,6 +7,7 @@ import { User } from './users/entities/user.entity';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
+import { AuthModule } from './auth/auth.module';
 import * as Joi from '@hapi/joi';
 
 @Module({
@@ -48,6 +49,7 @@ import * as Joi from '@hapi/joi';
     }),
     UsersModule,
     EmailModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

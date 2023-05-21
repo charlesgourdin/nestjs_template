@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import EmailService from 'src/email/email.service';
+import { EmailService } from 'src/email/email.service';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,7 +13,6 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly emailService: EmailService,
-    private readonly configService: ConfigService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {

@@ -5,7 +5,7 @@ import * as Mail from 'nodemailer/lib/mailer';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export default class EmailService {
+export class EmailService {
   private nodemailerTransport: Mail;
 
   constructor(
