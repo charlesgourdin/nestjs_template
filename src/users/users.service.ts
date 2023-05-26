@@ -23,9 +23,9 @@ export class UsersService {
         ...createUserDto,
         password: hashedPassword,
       });
-      const { id } = await this.usersRepository.save(user);
+      const { id, email } = await this.usersRepository.save(user);
 
-      await this.authService.sendVerificationLink('gourdin.charles@gmail.com');
+      await this.authService.sendVerificationLink(email);
 
       return id;
     } catch (error) {
@@ -40,7 +40,7 @@ export class UsersService {
           email,
         },
         {
-          isActive: false,
+          isActive: true,
         },
       );
     } catch (error) {
