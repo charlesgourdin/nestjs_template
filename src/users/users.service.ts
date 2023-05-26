@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  NotFoundException,
+  BadRequestException,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from '../auth/auth.service';
@@ -45,6 +49,18 @@ export class UsersService {
       );
     } catch (error) {
       throw error;
+    }
+  }
+
+  async checkUserIsActive(email: string): Promise<boolean> {
+    try {
+      const { isActive } = await this.usersRepository.findOneBy({ email });
+      if (isActive) {
+        throw new BadRequestException('User account already validated');
+      }
+      return isActive;
+    } catch (error) {
+      throw new NotFoundException('User does not exist');
     }
   }
 
