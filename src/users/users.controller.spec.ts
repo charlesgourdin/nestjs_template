@@ -21,6 +21,10 @@ describe('UsersController', () => {
         EmailService,
         JwtService,
         ConfigService,
+        {
+          provide: getRepositoryToken(User),
+          useClass: Repository,
+        },
       ],
     }).compile();
 
