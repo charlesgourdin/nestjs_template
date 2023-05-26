@@ -58,8 +58,20 @@ export class UsersService {
     }
   }
 
-  findOne(id: string) {
-    return this.usersRepository.findOneBy({ id });
+  async findOneById(id: string) {
+    try {
+      return await this.usersRepository.findOneBy({ id });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findOneByEmail(email: string) {
+    try {
+      return await this.usersRepository.findOneBy({ email });
+    } catch (error) {
+      throw error;
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

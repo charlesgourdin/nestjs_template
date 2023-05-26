@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -37,8 +38,25 @@ export class UsersController {
     }
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {}
+  @Get('/user:id')
+  async findOneById(@Param('id') id: string) {
+    try {
+      const result = await this.usersService.findOneById(id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  @Get('/user')
+  async findOneByEmail(@Query('email') email: string) {
+    try {
+      const result = await this.usersService.findOneByEmail(email);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
