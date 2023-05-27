@@ -1,7 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from '../users/dto/create-user.dto';
 import { EmailService } from '../email/email.service';
+import { UsersService } from '../users/users.service';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -9,7 +12,27 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
+    private readonly usersService: UsersService,
   ) {}
+
+  async signUp(createUserDto: CreateUserDto) {
+    try {
+      const { password } = createUserDto;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = await this.usersService.create({
+        ...createUserDto,
+        password: hashedPassword,
+      });
+
+      const { email, id } = user;
+
+      await this.sendVerificationLink(email);
+
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   sendVerificationLink(email: string) {
     const payload = { email };

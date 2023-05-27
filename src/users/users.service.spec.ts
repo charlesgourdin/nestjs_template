@@ -1,10 +1,6 @@
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { EmailService } from '../email/email.service';
 import { Repository } from 'typeorm';
-import { AuthService } from '../auth/auth.service';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -15,10 +11,6 @@ describe('UsersService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
-        AuthService,
-        EmailService,
-        JwtService,
-        ConfigService,
         {
           provide: getRepositoryToken(User),
           useClass: Repository,

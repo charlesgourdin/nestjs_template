@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { AuthService } from '../auth/auth.service';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,22 +15,14 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private readonly authService: AuthService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
     try {
-      const { password } = createUserDto;
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await this.usersRepository.create({
-        ...createUserDto,
-        password: hashedPassword,
-      });
-      const { id, email } = await this.usersRepository.save(user);
+      const user = await this.usersRepository.create(createUserDto);
+      const createdUser = await this.usersRepository.save(user);
 
-      await this.authService.sendVerificationLink(email);
-
-      return id;
+      return createdUser;
     } catch (error) {
       throw error;
     }
