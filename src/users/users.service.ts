@@ -4,7 +4,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import * as bcrypt from 'bcrypt';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -81,8 +80,19 @@ export class UsersService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      return this.usersRepository.update(
+        {
+          id,
+        },
+        {
+          ...updateUserDto,
+        },
+      );
+    } catch (error) {
+      throw error;
+    }
   }
 
   remove(id: number) {

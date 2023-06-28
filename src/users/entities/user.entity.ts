@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity()
-@Unique(['email'])
+@Unique(['email', 'userName'])
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -23,4 +23,7 @@ export class User {
 
   @Column({ default: false })
   isActive: boolean;
+
+  @Column({ nullable: true })
+  refreshToken: string;
 }
