@@ -1,8 +1,8 @@
 {
-  "name": "pwipper-backend",
+  "name": "nest-template",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "NestJS template.",
+  "author": "Charles Gourdin",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
